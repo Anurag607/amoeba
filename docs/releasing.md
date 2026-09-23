@@ -27,3 +27,8 @@ requires byte-identical output. `scripts/verify_versions.sh` checks the npm and
 TypeScript versions and optionally checks a release tag. Publication is not a
 valid local verification step without an authenticated canonical GitHub remote,
 Homebrew tap, and npm account.
+
+`make release-check` performs two complete snapshot releases and requires all
+five archives to be byte-identical. Archive owners and timestamps are
+normalized, then the gate validates checksums, SBOM count, archive contents,
+the Homebrew formula URL, and the npm package before deleting `.release/`.

@@ -123,7 +123,8 @@ race detection, TypeScript packaging, version consistency, layout limits, and
 clean npm/pnpm installation plus a reproducible binary comparison. `make
 certify` adds static analysis,
 dependency vulnerability checks, and npm audit; `make release-check` builds all
-release archives and SBOMs without publishing.
+release archives and SBOMs twice, verifies byte reproducibility and packaging,
+and does not publish.
 Release builds inject version, commit, and date metadata. Module-aware source
 installs also derive available version-control metadata from Go build info.
 

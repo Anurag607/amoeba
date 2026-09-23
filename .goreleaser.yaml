@@ -10,6 +10,7 @@ builds:
       - CGO_ENABLED=0
     flags:
       - -trimpath
+    mod_timestamp: "315532800"
     goos: [darwin, linux, windows]
     goarch: [amd64, arm64]
     ignore:
@@ -31,14 +32,20 @@ archives:
         formats: [zip]
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     builds_info:
-      mtime: "1970-01-01T00:00:00Z"
+      owner: root
+      group: root
+      mtime: "1980-01-01T00:00:00Z"
     files:
       - src: LICENSE
         info:
-          mtime: "1970-01-01T00:00:00Z"
+          owner: root
+          group: root
+          mtime: "1980-01-01T00:00:00Z"
       - src: README.md
         info:
-          mtime: "1970-01-01T00:00:00Z"
+          owner: root
+          group: root
+          mtime: "1980-01-01T00:00:00Z"
 
 checksum:
   name_template: checksums.txt

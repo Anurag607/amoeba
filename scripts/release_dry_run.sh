@@ -17,6 +17,14 @@ if [ "${1-}" != "--verify-only" ]; then
     printf '%s\n' 'goreleaser is required for release-check' >&2
     exit 1
   fi
+  first_archives=$(find "$release_dir" -maxdepth 1 -type f \( -name '*.tar.gz' -o -name '*.zip' \) -exec shasum -a 256 {} \; | sed "s|  $release_dir/|  |" | sort)
+  goreleaser release --snapshot --clean --skip=publish
+  second_archives=$(find "$release_dir" -maxdepth 1 -type f \( -name '*.tar.gz' -o -name '*.zip' \) -exec shasum -a 256 {} \; | sed "s|  $release_dir/|  |" | sort)
+  if [ "$first_archives" != "$second_archives" ]; then
+    printf '%s\n' 'release archives are not reproducible' >&2
+    exit 1
+  fi
+  printf '%s\n' 'release archives are byte-reproducible'
 fi
 
 npm pack --dry-run ./sdk/typescript >/dev/null
