@@ -1,0 +1,71 @@
+version: 2
+project_name: agentic-moe
+dist: .release
+
+builds:
+  - id: agentic-moe
+    main: ./cmd/agentic-moe
+    binary: agentic-moe
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    goos: [darwin, linux, windows]
+    goarch: [amd64, arm64]
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -buildid=
+      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Version={{ .Version }}
+      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Commit={{ .Commit }}
+      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Date={{ .CommitDate }}
+
+archives:
+  - id: release
+    ids: [agentic-moe]
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds_info:
+      mtime: "1970-01-01T00:00:00Z"
+    files:
+      - src: LICENSE
+        info:
+          mtime: "1970-01-01T00:00:00Z"
+      - src: README.md
+        info:
+          mtime: "1970-01-01T00:00:00Z"
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+sboms:
+  - artifacts: archive
+
+changelog:
+  use: git
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+brews:
+  - name: agentic-moe
+    ids: [release]
+    repository:
+      owner: anurgosw
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    directory: Formula
+    url_template: "https://github.com/anurgosw/agentic-moe/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    homepage: https://github.com/anurgosw/agentic-moe
+    description: Host-neutral Mixture-of-Experts planning framework and MCP server
+    license: Apache-2.0
+    test: |
+      system "#{bin}/agentic-moe", "version"
