@@ -98,7 +98,7 @@ await client.close();
 | [`provider/ollama`](provider/ollama) | Bounded read-only Ollama health and installed-model discovery. |
 | [`mcpserver`](mcpserver) | Official MCP SDK server over stdio and stateless Streamable HTTP. |
 | [`configgen`](configgen) | Explicit config generation for generic MCP, Codex, VS Code, and Ollama users. |
-| [`evaluation`](evaluation) | Offline routing holdouts plus opt-in live capability cases, categorized deterministic scoring, bounded Ollama generation, and redacted reports. |
+| [`evaluation`](evaluation) | Offline routing holdouts plus opt-in live capability cases, provider-neutral structured-output contracts, categorized deterministic scoring, bounded Ollama generation, and redacted reports. |
 
 ## Operational contract
 

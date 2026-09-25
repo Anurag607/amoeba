@@ -12,6 +12,8 @@ Versioning and keeps this file in the Keep a Changelog format.
   cancellation and concurrency probes, and redacted JSON scorecards.
 - A frozen offline routing corpus with separate development and holdout splits,
   router fuzz coverage, and allocation-aware microbenchmarks.
+- Provider-neutral JSON Schema output contracts with Ollama constrained
+  decoding and strict local validation for machine-readable evaluation cases.
 
 ### Changed
 
@@ -21,8 +23,9 @@ Versioning and keeps this file in the Keep a Changelog format.
 - Default experts include broader explicit vocabulary and concise operating
   prompts for exact formatting, evidence handling, safe side effects, rollback,
   and verification.
-- Evaluation report schema 2 records the configured Ollama context window and
-  separates factual, format, instruction, and safety assertion failures.
+- Evaluation report schema 3 records constrained-output use. Structured
+  contracts are applied equally to baseline and routed trials without output
+  repair or format retries; existing deterministic assertions remain strict.
 
 ## [0.1.0] - 2026-09-24
 

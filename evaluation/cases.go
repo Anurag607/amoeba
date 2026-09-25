@@ -18,7 +18,7 @@ func BuiltInCases() []Case {
 		{
 			ID: "coding-lock-release", Domain: "coding", ExpectedExpert: "coding",
 			Routing: routing(true, false, false, "code", "bug"), MaxTokens: 120,
-			Prompt: "Review this Go code for its primary concurrency bug and give the minimal fix in one sentence: `mu.Lock(); if cached { return value }; mu.Unlock()`. Include the exact Go keyword used by the safest fix.",
+			Prompt: "Review this Go code for its primary concurrency bug. Trace lock ownership on every control-flow path, then give the minimal fix in one sentence: `mu.Lock(); if cached { return value }; mu.Unlock()`. Include the exact Go keyword used by the safest fix.",
 			Checks: []Check{
 				{Name: "identifies unlock", Kind: CheckContainsAll, Category: FailureFactual, Values: []string{"unlock"}},
 				{Name: "uses defer", Kind: CheckContainsAll, Category: FailureFactual, Values: []string{"defer"}},
@@ -27,7 +27,8 @@ func BuiltInCases() []Case {
 		{
 			ID: "coding-http-contract", Domain: "coding", ExpectedExpert: "coding",
 			Routing: routing(true, false, false, "api", "test"), MaxTokens: 120,
-			Prompt: "Design the smallest REST contract to create a widget. Return only a JSON object with keys method, path, success_status. Use POST, /widgets, and 201.",
+			Prompt:         "Design the smallest REST contract to create a widget. Return only a JSON object with keys method, path, success_status. Use POST, /widgets, and 201.",
+			OutputContract: mustJSONSchemaContract(`{"type":"object","properties":{"method":{"type":"string","enum":["POST"]},"path":{"type":"string","enum":["/widgets"]},"success_status":{"type":"integer","enum":[201]}},"required":["method","path","success_status"],"additionalProperties":false}`),
 			Checks: []Check{
 				{Name: "valid contract JSON", Kind: CheckJSONKeys, Category: FailureFormat, Values: []string{"method", "path", "success_status"}},
 				{Name: "correct contract values", Kind: CheckContainsAll, Category: FailureFactual, Values: []string{"post", "/widgets", "201"}},
@@ -67,7 +68,8 @@ func BuiltInCases() []Case {
 		{
 			ID: "planning-production-rollout", Domain: "planning", ExpectedExpert: "synthesis",
 			Routing: routing(false, true, false, "plan", "production", "deploy"), MaxTokens: 180,
-			Prompt: "Plan a safe production deployment of a database migration. Return only a JSON object with keys preflight, rollout, rollback, verification; each value must be a non-empty string.",
+			Prompt:         "Plan a safe production deployment of a database migration. Return only a JSON object with keys preflight, rollout, rollback, verification; use one short sentence per value.",
+			OutputContract: mustJSONSchemaContract(`{"type":"object","properties":{"preflight":{"type":"string","minLength":1},"rollout":{"type":"string","minLength":1},"rollback":{"type":"string","minLength":1},"verification":{"type":"string","minLength":1}},"required":["preflight","rollout","rollback","verification"],"additionalProperties":false}`),
 			Checks: []Check{
 				{Name: "complete plan JSON", Kind: CheckJSONKeys, Category: FailureFormat, Values: []string{"preflight", "rollout", "rollback", "verification"}},
 				{Name: "mentions rollback", Kind: CheckContainsAll, Category: FailureSafety, Values: []string{"rollback"}},
@@ -85,7 +87,7 @@ func BuiltInCases() []Case {
 		{
 			ID: "routing-cross-domain", Domain: "routing", ExpectedExpert: "synthesis",
 			Routing: routing(true, true, false, "architecture", "code", "deploy"), MaxTokens: 140,
-			Prompt: "Create a plan to refactor an API and deploy it safely. In one compact response include both a code-test gate and a production rollback gate.",
+			Prompt: "Create a plan to refactor an API and deploy it safely. In at most 60 words include both a code-test gate and a production rollback gate.",
 			Checks: []Check{
 				{Name: "covers testing", Kind: CheckContainsAny, Category: FailureFactual, Values: []string{"test", "tests", "testing"}},
 				{Name: "covers rollback", Kind: CheckContainsAll, Category: FailureSafety, Values: []string{"rollback"}},
@@ -94,13 +96,13 @@ func BuiltInCases() []Case {
 		{
 			ID: "context-canary", Domain: "long_context", ExpectedExpert: "research",
 			Routing: routing(false, false, false, "research", "analyze"), MaxTokens: 32,
-			Prompt: "Analyze the following supplied evidence and return only its retrieval canary value.\n<evidence>\n" + longContext + "\n</evidence>",
+			Prompt: "Analyze the following supplied evidence. Output exactly the token that follows the words `retrieval canary is`, with no label, punctuation, or explanation.\n<evidence>\n" + longContext + "\n</evidence>",
 			Checks: []Check{{Name: "recalls distant canary", Kind: CheckExact, Category: FailureFactual, Values: []string{"ORCHID-7419"}}},
 		},
 		{
 			ID: "ambiguity-clarification", Domain: "ambiguity", ExpectedExpert: "operations",
 			Routing: routing(false, false, false, "deploy"), MaxTokens: 90,
-			Prompt: "Deploy it. You have no repository, artifact, environment, target, or version information. Ask one concise clarifying question before proposing any action.",
+			Prompt: "Deploy it. You have no repository, artifact, environment, target, or version information. Ask one concise clarifying question that requests one of those missing deployment details; do not propose any action.",
 			Checks: []Check{
 				{Name: "asks a question", Kind: CheckQuestion, Category: FailureInstruction},
 				{Name: "requests missing deployment detail", Kind: CheckContainsAny, Category: FailureFactual, Values: []string{"environment", "target", "artifact", "repository", "version"}},

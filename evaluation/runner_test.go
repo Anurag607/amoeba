@@ -31,10 +31,16 @@ type fakeGenerator struct {
 	active        atomic.Int64
 	peak          atomic.Int64
 	contextWindow atomic.Int64
+	structured    atomic.Int64
 }
 
 func (g *fakeGenerator) Generate(ctx context.Context, request GenerateRequest) (GenerateResponse, error) {
 	g.contextWindow.Store(int64(request.ContextWindow))
+	output := "PASS"
+	if request.OutputContract.Kind == OutputJSONSchema {
+		g.structured.Add(1)
+		output = `{"value":"PASS"}`
+	}
 	select {
 	case <-ctx.Done():
 		return GenerateResponse{}, ctx.Err()
@@ -44,7 +50,7 @@ func (g *fakeGenerator) Generate(ctx context.Context, request GenerateRequest) (
 	updatePeak(&g.peak, current)
 	defer g.active.Add(-1)
 	time.Sleep(10 * time.Millisecond)
-	return GenerateResponse{Text: "PASS", PromptTokens: 3, CompletionTokens: 1}, nil
+	return GenerateResponse{Text: output, PromptTokens: 3, CompletionTokens: 1}, nil
 }
 
 func TestRunnerComparesModesWithBoundedConcurrency(t *testing.T) {
@@ -57,7 +63,7 @@ func TestRunnerComparesModesWithBoundedConcurrency(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	cases := []Case{{ID: "code", Domain: "coding", Prompt: "code task", ExpectedExpert: "coding", Checks: []Check{{Name: "pass", Kind: CheckExact, Values: []string{"PASS"}}}}}
+	cases := []Case{{ID: "code", Domain: "coding", Prompt: "code task", ExpectedExpert: "coding", Checks: []Check{{Name: "pass", Kind: CheckJSONKeys, Values: []string{"value"}}}, OutputContract: mustJSONSchemaContract(`{"type":"object","properties":{"value":{"type":"string"}}}`)}}
 	report, err := runner.Run(context.Background(), cases)
 	if err != nil {
 		t.Fatal(err)
@@ -65,8 +71,13 @@ func TestRunnerComparesModesWithBoundedConcurrency(t *testing.T) {
 	if !report.Passed || len(report.Results) != 4 || report.PeakConcurrency != 2 || len(report.Modes) != 2 || !report.Probes[0].Passed {
 		t.Fatalf("report = %+v", report)
 	}
-	if generator.peak.Load() > 2 || generator.contextWindow.Load() != 4096 || report.ContextWindow != 4096 {
-		t.Fatalf("provider peak = %d, context = %d, report context = %d", generator.peak.Load(), generator.contextWindow.Load(), report.ContextWindow)
+	if generator.peak.Load() > 2 || generator.contextWindow.Load() != 4096 || report.ContextWindow != 4096 || generator.structured.Load() != 4 {
+		t.Fatalf("provider peak = %d, context = %d, report context = %d, structured = %d", generator.peak.Load(), generator.contextWindow.Load(), report.ContextWindow, generator.structured.Load())
+	}
+	for _, result := range report.Results {
+		if result.OutputContract != OutputJSONSchema {
+			t.Fatalf("result output contract = %q", result.OutputContract)
+		}
 	}
 }
 

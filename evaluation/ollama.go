@@ -83,12 +83,19 @@ func (c *OllamaClient) Generate(ctx context.Context, request GenerateRequest) (G
 	if request.ContextWindow < 512 || request.ContextWindow > 1<<20 {
 		return GenerateResponse{}, fmt.Errorf("evaluation: context window must be between 512 and 1048576")
 	}
+	if err := request.OutputContract.Validate(); err != nil {
+		return GenerateResponse{}, fmt.Errorf("evaluation: %w", err)
+	}
 	ctx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
+	var format json.RawMessage
+	if request.OutputContract.Kind == OutputJSONSchema {
+		format = append(json.RawMessage(nil), request.OutputContract.Schema...)
+	}
 	body, err := json.Marshal(chatRequest{
 		Model: request.Model, Stream: false, Think: false,
 		Messages: []chatMessage{{Role: "system", Content: request.System}, {Role: "user", Content: request.Prompt}},
-		Options:  chatOptions{Temperature: 0, Seed: request.Seed, NumPredict: request.MaxTokens, NumCtx: request.ContextWindow},
+		Format:   format, Options: chatOptions{Temperature: 0, Seed: request.Seed, NumPredict: request.MaxTokens, NumCtx: request.ContextWindow},
 	})
 	if err != nil {
 		return GenerateResponse{}, fmt.Errorf("evaluation: encode Ollama request: %w", err)
@@ -170,11 +177,12 @@ func (c *OllamaClient) Preflight(ctx context.Context, model string) error {
 }
 
 type chatRequest struct {
-	Model    string        `json:"model"`
-	Messages []chatMessage `json:"messages"`
-	Stream   bool          `json:"stream"`
-	Think    bool          `json:"think"`
-	Options  chatOptions   `json:"options"`
+	Model    string          `json:"model"`
+	Messages []chatMessage   `json:"messages"`
+	Stream   bool            `json:"stream"`
+	Think    bool            `json:"think"`
+	Format   json.RawMessage `json:"format,omitempty"`
+	Options  chatOptions     `json:"options"`
 }
 
 type chatMessage struct {

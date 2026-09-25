@@ -11,7 +11,7 @@ import (
 )
 
 // ReportVersion is the machine-readable evaluation report schema version.
-const ReportVersion = 2
+const ReportVersion = 3
 
 // Mode identifies the prompt strategy used for one trial.
 type Mode string
@@ -63,6 +63,7 @@ type Case struct {
 	ExpectedExpert string                  `json:"expected_expert,omitempty"`
 	Checks         []Check                 `json:"-"`
 	MaxTokens      int                     `json:"-"`
+	OutputContract OutputContract          `json:"-"`
 }
 
 // Planner is the narrow runtimekit surface used by the evaluator.
@@ -72,12 +73,13 @@ type Planner interface {
 
 // GenerateRequest is a bounded, host-owned model call.
 type GenerateRequest struct {
-	Model         string
-	System        string
-	Prompt        string
-	Seed          int
-	MaxTokens     int
-	ContextWindow int
+	Model          string
+	System         string
+	Prompt         string
+	Seed           int
+	MaxTokens      int
+	ContextWindow  int
+	OutputContract OutputContract
 }
 
 // GenerateResponse contains only fields needed for scoring and telemetry.
@@ -123,28 +125,29 @@ type AssertionResult struct {
 // TrialResult is one case/mode/repeat outcome. It contains a bounded redacted
 // preview and digest, never the prompt or an unbounded raw response.
 type TrialResult struct {
-	CaseID            string            `json:"case_id"`
-	Domain            string            `json:"domain"`
-	Mode              Mode              `json:"mode"`
-	Repeat            int               `json:"repeat"`
-	Model             string            `json:"model"`
-	SelectedExpert    string            `json:"selected_expert,omitempty"`
-	ExpectedExpert    string            `json:"expected_expert,omitempty"`
-	ToolNames         []string          `json:"tool_names,omitempty"`
-	Tier              string            `json:"tier,omitempty"`
-	AnswerScore       float64           `json:"answer_score"`
-	RoutingScore      float64           `json:"routing_score,omitempty"`
-	RoutingApplicable bool              `json:"routing_applicable"`
-	Passed            bool              `json:"passed"`
-	Assertions        []AssertionResult `json:"assertions"`
-	LatencyMS         int64             `json:"latency_ms"`
-	PromptTokens      int               `json:"prompt_tokens,omitempty"`
-	CompletionTokens  int               `json:"completion_tokens,omitempty"`
-	OutputSHA256      string            `json:"output_sha256,omitempty"`
-	OutputPreview     string            `json:"output_preview,omitempty"`
-	ErrorClass        string            `json:"error_class,omitempty"`
-	Error             string            `json:"error,omitempty"`
-	FailureClasses    []FailureClass    `json:"failure_classes,omitempty"`
+	CaseID            string             `json:"case_id"`
+	Domain            string             `json:"domain"`
+	Mode              Mode               `json:"mode"`
+	Repeat            int                `json:"repeat"`
+	Model             string             `json:"model"`
+	SelectedExpert    string             `json:"selected_expert,omitempty"`
+	ExpectedExpert    string             `json:"expected_expert,omitempty"`
+	ToolNames         []string           `json:"tool_names,omitempty"`
+	Tier              string             `json:"tier,omitempty"`
+	AnswerScore       float64            `json:"answer_score"`
+	RoutingScore      float64            `json:"routing_score,omitempty"`
+	RoutingApplicable bool               `json:"routing_applicable"`
+	Passed            bool               `json:"passed"`
+	Assertions        []AssertionResult  `json:"assertions"`
+	LatencyMS         int64              `json:"latency_ms"`
+	PromptTokens      int                `json:"prompt_tokens,omitempty"`
+	CompletionTokens  int                `json:"completion_tokens,omitempty"`
+	OutputSHA256      string             `json:"output_sha256,omitempty"`
+	OutputPreview     string             `json:"output_preview,omitempty"`
+	ErrorClass        string             `json:"error_class,omitempty"`
+	Error             string             `json:"error,omitempty"`
+	FailureClasses    []FailureClass     `json:"failure_classes,omitempty"`
+	OutputContract    OutputContractKind `json:"output_contract,omitempty"`
 }
 
 // Summary aggregates a mode or domain without hiding sample count.

@@ -12,12 +12,13 @@ import (
 )
 
 func TestOllamaClientGeneratesBoundedChat(t *testing.T) {
+	contract := mustJSONSchemaContract(`{"type":"object","properties":{"answer":{"type":"integer"}},"required":["answer"],"additionalProperties":false}`)
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost || r.URL.Path != "/base/api/chat" || r.Header.Get("Content-Type") != "application/json" {
 			t.Errorf("request = %s %s, content-type %q", r.Method, r.URL.Path, r.Header.Get("Content-Type"))
 		}
 		body, _ := io.ReadAll(r.Body)
-		if strings.Contains(string(body), `"stream":true`) || !strings.Contains(string(body), `"seed":7`) || !strings.Contains(string(body), `"num_ctx":4096`) {
+		if strings.Contains(string(body), `"stream":true`) || !strings.Contains(string(body), `"seed":7`) || !strings.Contains(string(body), `"num_ctx":4096`) || !strings.Contains(string(body), `"format":{"type":"object"`) {
 			t.Errorf("body = %s", body)
 		}
 		_, _ = io.WriteString(w, `{"message":{"role":"assistant","content":"389"},"prompt_eval_count":5,"eval_count":1,"total_duration":1000000}`)
@@ -27,9 +28,31 @@ func TestOllamaClientGeneratesBoundedChat(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	response, err := client.Generate(context.Background(), GenerateRequest{Model: "model", System: "system", Prompt: "prompt", Seed: 7, MaxTokens: 5, ContextWindow: 4096})
+	response, err := client.Generate(context.Background(), GenerateRequest{Model: "model", System: "system", Prompt: "prompt", Seed: 7, MaxTokens: 5, ContextWindow: 4096, OutputContract: contract})
 	if err != nil || response.Text != "389" || response.PromptTokens != 5 || response.CompletionTokens != 1 {
 		t.Fatalf("response = %+v, error = %v", response, err)
+	}
+}
+
+func TestOllamaClientDoesNotRepairOrRetryContractViolations(t *testing.T) {
+	var calls int
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		calls++
+		_, _ = io.WriteString(w, `{"message":{"role":"assistant","content":"not-json"}}`)
+	}))
+	defer server.Close()
+	client, err := NewOllamaClient(OllamaConfig{BaseURL: server.URL})
+	if err != nil {
+		t.Fatal(err)
+	}
+	contract := mustJSONSchemaContract(`{"type":"object","properties":{"answer":{"type":"string"}},"required":["answer"]}`)
+	response, err := client.Generate(context.Background(), GenerateRequest{Model: "m", Prompt: "p", MaxTokens: 8, OutputContract: contract})
+	if err != nil || response.Text != "not-json" || calls != 1 {
+		t.Fatalf("response = %+v, calls = %d, error = %v", response, calls, err)
+	}
+	invalid := OutputContract{Kind: OutputJSONSchema, Schema: []byte(`{`)}
+	if _, err := client.Generate(context.Background(), GenerateRequest{Model: "m", Prompt: "p", MaxTokens: 8, OutputContract: invalid}); err == nil || calls != 1 {
+		t.Fatalf("invalid contract error = %v, calls = %d", err, calls)
 	}
 }
 

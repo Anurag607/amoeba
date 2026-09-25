@@ -36,6 +36,9 @@ func validateCases(cases []Case) error {
 		if len(item.Checks) == 0 {
 			return fmt.Errorf("evaluation: case %q requires checks", item.ID)
 		}
+		if err := item.OutputContract.Validate(); err != nil {
+			return fmt.Errorf("evaluation: case %q: %w", item.ID, err)
+		}
 		for _, check := range item.Checks {
 			if err := validateCheck(check); err != nil {
 				return fmt.Errorf("evaluation: case %q: %w", item.ID, err)

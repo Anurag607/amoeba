@@ -51,7 +51,9 @@ redirect discovery to a different network authority.
 The separate, explicitly invoked `agentic-moe-eval` binary can run an installed
 model through Ollama's bounded non-streaming chat API. It is not started by the
 runtime, MCP server, package installation, tests, or CI. See
-[capability evaluation](evaluation.md).
+[capability evaluation](evaluation.md). Evaluation cases that declare a JSON
+Schema send it through Ollama's `format` field in both baseline and routed
+modes. The response is also validated locally, without repair or retry.
 
 ## Streamable HTTP
 
