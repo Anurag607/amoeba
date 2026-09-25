@@ -41,12 +41,17 @@ a regular file is explicitly requested with `--force`.
 
 ## Ollama
 
-Ollama defaults to `http://127.0.0.1:11434`. Remote endpoints are rejected
+Ollama discovery defaults to `http://127.0.0.1:11434`. Remote endpoints are rejected
 unless `allow_remote` is explicit. Discovery calls `/api/version` and
 `/api/tags`, limits response size and duration, and maps installed model size
 to fast, balanced, or strong routing tiers. The integration never pulls or
 runs a model. HTTP redirects are rejected so a trusted loopback endpoint cannot
 redirect discovery to a different network authority.
+
+The separate, explicitly invoked `agentic-moe-eval` binary can run an installed
+model through Ollama's bounded non-streaming chat API. It is not started by the
+runtime, MCP server, package installation, tests, or CI. See
+[capability evaluation](evaluation.md).
 
 ## Streamable HTTP
 
@@ -60,3 +65,15 @@ and concurrent admission; overload returns HTTP 429.
 The repository's package smoke gate exercises both transports as real child
 processes through the published TypeScript surface, in addition to protocol
 tests against the official Go MCP client.
+
+## Routing integration guidance
+
+Start with `runtimekit.DefaultConfig` and replace expert vocabulary only when
+your host has a narrower taxonomy. Use whole words and short phrases, enumerate
+intended variants, and avoid generic stems. Pass code, build, issue, trace, and
+topic context as supporting evidence; do not encode the entire prompt again as
+topics. Keep one general fallback and one synthesis expert. Before shipping a
+custom configuration, add provider-free routing cases modeled on
+`evaluation.RoutingCases`, keep a holdout split, run the router benchmark, then
+use `agentic-moe-eval` against at least one small and one stronger installed
+model. Model answer quality and deterministic routing are separate gates.

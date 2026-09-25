@@ -285,10 +285,34 @@ func parseTier(value string) (moe.ModelTier, error) {
 
 func defaultExperts() []ExpertConfig {
 	return []ExpertConfig{
-		{ID: "general", Name: "General Expert", Description: "General reasoning and coordination", Keywords: []string{"explain", "help", "question"}, DefaultTier: "balanced", Priority: 20},
-		{ID: "coding", Name: "Coding Expert", Description: "Software design, implementation, and debugging", Keywords: []string{"code", "bug", "test", "build", "api", "refactor"}, DefaultTier: "balanced", Priority: 10},
-		{ID: "research", Name: "Research Expert", Description: "Evidence gathering and comparative analysis", Keywords: []string{"research", "compare", "source", "evidence", "analyze"}, DefaultTier: "strong", Priority: 20},
-		{ID: "operations", Name: "Operations Expert", Description: "Deployment, reliability, and incident work", Keywords: []string{"deploy", "incident", "logs", "production", "monitor"}, DefaultTier: "balanced", Priority: 20},
-		{ID: "synthesis", Name: "Synthesis Expert", Description: "Cross-domain planning and synthesis", Keywords: []string{"plan", "architecture", "strategy"}, DefaultTier: "strong", Priority: 100, CanSynthesize: true},
+		{
+			ID: "general", Name: "General Expert", Description: "General reasoning, writing, and clarification",
+			Keywords:    []string{"explain", "help", "calculate", "arithmetic", "math", "logic", "reason", "reasoning", "write", "rewrite", "release note", "summarize", "summary", "clarify", "clarification", "diagnostic", "credential", "redact", "redacted", "secret", "safety"},
+			Prompt:      "Reason carefully. Follow the requested output format exactly. Ask one concise question when essential information is missing.",
+			DefaultTier: "balanced", Priority: 20,
+		},
+		{
+			ID: "coding", Name: "Coding Expert", Description: "Software design, implementation, testing, and debugging",
+			Keywords:    []string{"code", "coding", "bug", "debug", "test", "tests", "testing", "build", "api", "refactor", "refactoring", "function", "compile", "diff", "commit", "review", "pipeline", "ci", "database", "migration", "database migration"},
+			Prompt:      "Identify the root cause, prefer the smallest safe change, and preserve exact output or API contracts.",
+			DefaultTier: "balanced", Priority: 10,
+		},
+		{
+			ID: "research", Name: "Research Expert", Description: "Evidence gathering and comparative analysis",
+			Keywords:    []string{"research", "compare", "compares", "comparison", "source", "sources", "evidence", "analyze", "analysis", "study", "citation", "citations"},
+			DefaultTier: "strong", Priority: 20,
+		},
+		{
+			ID: "operations", Name: "Operations Expert", Description: "Deployment, reliability, incident, and rollback work",
+			Keywords:    []string{"deploy", "deployment", "incident", "log", "logs", "production", "monitor", "monitored", "monitoring", "rollback", "rollout", "release", "reliability", "telemetry", "trace", "latency", "span"},
+			Prompt:      "Fail closed on side effects. Require authority, preflight checks, rollback, and verification before claiming completion.",
+			DefaultTier: "balanced", Priority: 20,
+		},
+		{
+			ID: "synthesis", Name: "Synthesis Expert", Description: "Cross-domain planning and synthesis",
+			Keywords:    []string{"plan", "planning", "architecture", "strategy", "cross domain", "tradeoff", "tradeoffs", "coordinate", "coordination", "migration"},
+			Prompt:      "Integrate the relevant domains into one concise plan with dependencies, gates, rollback, and verification.",
+			DefaultTier: "strong", Priority: 100, CanSynthesize: true,
+		},
 	}
 }

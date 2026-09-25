@@ -110,6 +110,11 @@ func TestDefaultConfigJSONRoundTrip(t *testing.T) {
 	if err != nil || cfg.Version != ConfigVersion || len(cfg.Experts) == 0 {
 		t.Fatalf("Parse(round trip) = %+v, %v", cfg, err)
 	}
+	for _, expert := range cfg.Experts {
+		if expert.ID != "research" && strings.TrimSpace(expert.Prompt) == "" {
+			t.Fatalf("default expert %q has no operating prompt", expert.ID)
+		}
+	}
 }
 
 func FuzzParseConfig(f *testing.F) {

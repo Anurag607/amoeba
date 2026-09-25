@@ -16,6 +16,8 @@ expected_version=$(node -p "require('$root/sdk/typescript/package.json').version
 (
   cd "$root"
   go build -trimpath -o "$work/agentic-moe" ./cmd/agentic-moe
+  go build -trimpath -o "$work/agentic-moe-eval" ./cmd/agentic-moe-eval
+  "$work/agentic-moe-eval" --list >/dev/null
   npm run build --prefix sdk/typescript
   npm pack "$root/sdk/typescript" --pack-destination "$work" >/dev/null
 )

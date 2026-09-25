@@ -22,6 +22,7 @@ Build the CLI from source:
 
 ```sh
 go install github.com/anurgosw/agentic-moe/cmd/agentic-moe@latest
+go install github.com/anurgosw/agentic-moe/cmd/agentic-moe-eval@latest
 agentic-moe doctor
 agentic-moe mcp stdio
 ```
@@ -97,6 +98,7 @@ await client.close();
 | [`provider/ollama`](provider/ollama) | Bounded read-only Ollama health and installed-model discovery. |
 | [`mcpserver`](mcpserver) | Official MCP SDK server over stdio and stateless Streamable HTTP. |
 | [`configgen`](configgen) | Explicit config generation for generic MCP, Codex, VS Code, and Ollama users. |
+| [`evaluation`](evaluation) | Offline routing holdouts plus opt-in live capability cases, categorized deterministic scoring, bounded Ollama generation, and redacted reports. |
 
 ## Operational contract
 
@@ -116,7 +118,7 @@ await client.close();
   contracts; patch releases remain backward compatible.
 
 See [release policy](docs/releasing.md), [troubleshooting](docs/troubleshooting.md),
-and [contributing](CONTRIBUTING.md).
+the [capability evaluator](docs/evaluation.md), and [contributing](CONTRIBUTING.md).
 
 For maintainers, `make verify` is the complete source gate and includes
 race detection, TypeScript packaging, version consistency, layout limits, and
@@ -142,6 +144,16 @@ loop. It returns a `Plan` describing:
 You compose messages, call your model, and dispatch tool calls — the
 framework just tells you _which expert_, _which skills_, _which tools_,
 _which model tier_.
+
+**Evidence-based routing.** Router keywords match case-folded Unicode tokens or
+contiguous multi-token phrases, never arbitrary substrings. Configure explicit
+variants such as `deploy` and `deployment`; the router intentionally does not
+apply broad stemming. Query evidence and ambient context are scored separately.
+Sparse or unknown requests fall back to the `general` expert, while synthesis
+escalation requires at least two lexical signals from each of two distinct specialist
+domains. The synthesis expert may still win directly when the user explicitly
+uses its configured planning or architecture vocabulary. This keeps words such
+as `explanation` from matching `plan` and `diagnostic` from matching `api`.
 
 **Cross-expert delegation.** The central agent gets two tools out of the box:
 
@@ -507,8 +519,10 @@ new responsibility.
 make verify
 ```
 
-This formats Go source and runs the layout assertion, tests, race detector,
-coverage, vet, and full module build.
+This formats Go source and runs the layout assertion, tests (including the
+frozen development/holdout routing corpus), race detector, coverage, vet, and
+full module build. Router microbenchmarks are available with `go test ./moe
+-run '^$' -bench BenchmarkRouterRoute -benchmem`.
 
 ## Module info
 

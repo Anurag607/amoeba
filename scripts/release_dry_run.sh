@@ -12,13 +12,13 @@ cd "$repo_dir"
 
 if [ "${1-}" != "--verify-only" ]; then
   if command -v goreleaser >/dev/null 2>&1; then
-    goreleaser release --snapshot --clean --skip=publish
+    goreleaser release --snapshot --clean --skip=publish --parallelism=1
   else
     printf '%s\n' 'goreleaser is required for release-check' >&2
     exit 1
   fi
   first_archives=$(find "$release_dir" -maxdepth 1 -type f \( -name '*.tar.gz' -o -name '*.zip' \) -exec shasum -a 256 {} \; | sed "s|  $release_dir/|  |" | sort)
-  goreleaser release --snapshot --clean --skip=publish
+  goreleaser release --snapshot --clean --skip=publish --parallelism=1
   second_archives=$(find "$release_dir" -maxdepth 1 -type f \( -name '*.tar.gz' -o -name '*.zip' \) -exec shasum -a 256 {} \; | sed "s|  $release_dir/|  |" | sort)
   if [ "$first_archives" != "$second_archives" ]; then
     printf '%s\n' 'release archives are not reproducible' >&2
@@ -38,12 +38,14 @@ test "$sbom_count" -eq 5
 for archive in "$release_dir"/*.tar.gz; do
   contents=$(tar -tzf "$archive")
   printf '%s\n' "$contents" | grep -qx 'agentic-moe'
+  printf '%s\n' "$contents" | grep -qx 'agentic-moe-eval'
   printf '%s\n' "$contents" | grep -qx 'LICENSE'
   printf '%s\n' "$contents" | grep -qx 'README.md'
 done
 for archive in "$release_dir"/*.zip; do
   contents=$(unzip -Z1 "$archive")
   printf '%s\n' "$contents" | grep -qx 'agentic-moe.exe'
+  printf '%s\n' "$contents" | grep -qx 'agentic-moe-eval.exe'
   printf '%s\n' "$contents" | grep -qx 'LICENSE'
   printf '%s\n' "$contents" | grep -qx 'README.md'
 done

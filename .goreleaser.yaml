@@ -22,10 +22,29 @@ builds:
       - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Version={{ .Version }}
       - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Commit={{ .Commit }}
       - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Date={{ .CommitDate }}
+  - id: agentic-moe-eval
+    main: ./cmd/agentic-moe-eval
+    binary: agentic-moe-eval
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    mod_timestamp: "315532800"
+    goos: [darwin, linux, windows]
+    goarch: [amd64, arm64]
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -buildid=
+      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Version={{ .Version }}
+      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Commit={{ .Commit }}
+      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Date={{ .CommitDate }}
 
 archives:
   - id: release
-    ids: [agentic-moe]
+    ids: [agentic-moe, agentic-moe-eval]
     formats: [tar.gz]
     format_overrides:
       - goos: windows
@@ -76,3 +95,4 @@ brews:
     license: Apache-2.0
     test: |
       system "#{bin}/agentic-moe", "version"
+      system "#{bin}/agentic-moe-eval", "--list"

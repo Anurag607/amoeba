@@ -1,4 +1,4 @@
-.PHONY: fmt layout test race cover vet build ts-install ts-check ts-test npm-pack package-smoke version-check reproducible certify release-check verify
+.PHONY: fmt layout test race cover vet build eval-list ts-install ts-check ts-test npm-pack package-smoke version-check reproducible certify release-check verify
 
 fmt:
 	find . -type f -name '*.go' \
@@ -22,6 +22,9 @@ vet:
 
 build:
 	go build ./...
+
+eval-list:
+	go run ./cmd/agentic-moe-eval --list
 
 ts-install:
 	npm ci --prefix sdk/typescript

@@ -12,13 +12,16 @@ ldflags="-s -w -buildid= -X github.com/anurgosw/agentic-moe/internal/buildinfo.V
 
 (
   cd "$root"
-  CGO_ENABLED=0 SOURCE_DATE_EPOCH=0 go build -trimpath -ldflags "$ldflags" -o "$work/first" ./cmd/agentic-moe
-  CGO_ENABLED=0 SOURCE_DATE_EPOCH=0 go build -trimpath -ldflags "$ldflags" -o "$work/second" ./cmd/agentic-moe
+  CGO_ENABLED=0 SOURCE_DATE_EPOCH=0 go build -trimpath -ldflags "$ldflags" -o "$work/agentic-moe-first" ./cmd/agentic-moe
+  CGO_ENABLED=0 SOURCE_DATE_EPOCH=0 go build -trimpath -ldflags "$ldflags" -o "$work/agentic-moe-second" ./cmd/agentic-moe
+  CGO_ENABLED=0 SOURCE_DATE_EPOCH=0 go build -trimpath -ldflags "$ldflags" -o "$work/agentic-moe-eval-first" ./cmd/agentic-moe-eval
+  CGO_ENABLED=0 SOURCE_DATE_EPOCH=0 go build -trimpath -ldflags "$ldflags" -o "$work/agentic-moe-eval-second" ./cmd/agentic-moe-eval
 )
 
-if ! cmp -s "$work/first" "$work/second"; then
-  echo "reproducibility check failed: identical inputs produced different binaries" >&2
-  exit 1
-fi
-
-echo "reproducible binary sha256: $(shasum -a 256 "$work/first" | awk '{print $1}')"
+for binary in agentic-moe agentic-moe-eval; do
+  if ! cmp -s "$work/$binary-first" "$work/$binary-second"; then
+    echo "reproducibility check failed for $binary: identical inputs produced different binaries" >&2
+    exit 1
+  fi
+  echo "reproducible $binary sha256: $(shasum -a 256 "$work/$binary-first" | awk '{print $1}')"
+done

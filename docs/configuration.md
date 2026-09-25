@@ -27,6 +27,18 @@ Run `agentic-moe schema` for JSON Schema and
 Versionless files are migrated in memory to version 1; files are never
 rewritten implicitly.
 
+Expert `keywords` are matched as case-folded Unicode tokens or contiguous
+phrases. Punctuation is a boundary, so `release-note` matches the phrase
+`release note`; substrings do not match, so `explanation` does not imply
+`plan`. List intended grammatical variants explicitly instead of relying on
+stems. Keep the `general` expert as the low-confidence fallback and reserve
+`can_synthesize` for one expert: automatic synthesis escalation requires
+at least two positive lexical signals from each of two specialist domains, not
+context boosts or two generic words. Expert `prompt` values should be short operating constraints
+that reinforce output format, authority, rollback, and evidence handling. Leave
+an expert prompt empty when the host's secure baseline already owns those rules;
+redundant system instructions can reduce adherence on smaller models.
+
 The supported environment values are:
 
 - `AGENTIC_MOE_HTTP_ADDRESS`
