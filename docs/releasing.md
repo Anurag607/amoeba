@@ -25,6 +25,8 @@ only when `HOMEBREW_TAP_TOKEN` and `NPM_TOKEN`, respectively, are configured as
 repository secrets; without them, the canonical GitHub release still completes
 and the unavailable secondary publication is reported as skipped. These
 deployment credentials are never required for local source builds.
+Release retries replace same-name GitHub assets, so a failed secondary
+publication can be repaired without deleting the canonical release.
 
 `scripts/check_reproducible.sh` builds both binaries twice with fixed metadata
 and requires byte-identical output. `scripts/verify_versions.sh` checks the npm and

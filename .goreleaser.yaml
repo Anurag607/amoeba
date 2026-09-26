@@ -81,6 +81,9 @@ changelog:
       - "^docs:"
       - "^test:"
 
+release:
+  replace_existing_artifacts: true
+
 homebrew_casks:
   - name: agentic-moe
     ids: [release]
