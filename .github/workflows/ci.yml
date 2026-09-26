@@ -28,9 +28,9 @@ jobs:
       - run: go vet ./...
       - run: go build ./...
       - run: scripts/check_reproducible.sh
-      - uses: golang/govulncheck-action@032d45514ae346b1db93c04b0c90b841c370344f # v1
-        with:
-          go-version-input: '1.25.x'
+      # Pin the scanner to the newest release that supports the Go 1.25 floor.
+      - name: Run govulncheck
+        run: go run golang.org/x/vuln/cmd/govulncheck@v1.6.0 ./...
 
   typescript:
     runs-on: ubuntu-latest

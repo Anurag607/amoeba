@@ -50,6 +50,6 @@ for archive in "$release_dir"/*.zip; do
   printf '%s\n' "$contents" | grep -qx 'README.md'
 done
 
-formula="$release_dir/homebrew/Formula/agentic-moe.rb"
-test -s "$formula"
-grep -q 'github.com/anurgosw/agentic-moe/releases/download/' "$formula"
+cask="$release_dir/homebrew/Casks/agentic-moe.rb"
+test -s "$cask"
+grep -q 'github.com/Anurag607/amoeba/releases/download/' "$cask"

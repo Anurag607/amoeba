@@ -12,6 +12,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
     permissions:
       attestations: write
       contents: write
@@ -25,14 +27,24 @@ jobs:
           go-version: '1.25.x'
       - run: scripts/verify_versions.sh "$GITHUB_REF_NAME"
       - uses: anchore/sbom-action/download-syft@e22c389904149dbc22b58101806040fa8d37a610 # v0
-      - uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6
+      - name: Release with Homebrew publication
+        if: env.HOMEBREW_TAP_TOKEN != ''
+        uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6
         with:
           distribution: goreleaser
           version: '~> v2'
           args: release --clean --parallelism=1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+      - name: Release without Homebrew publication
+        if: env.HOMEBREW_TAP_TOKEN == ''
+        uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --clean --parallelism=1 --skip=homebrew
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
         with:
           subject-checksums: .release/checksums.txt
@@ -41,6 +53,8 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     permissions:
       contents: read
       id-token: write
@@ -57,6 +71,9 @@ jobs:
       - run: npm test
       - run: npm audit --audit-level=high
       - run: ../../scripts/verify_versions.sh "$GITHUB_REF_NAME"
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish npm package
+        if: env.NODE_AUTH_TOKEN != ''
+        run: npm publish --provenance --access public
+      - name: Report skipped npm publication
+        if: env.NODE_AUTH_TOKEN == ''
+        run: echo "::notice::NPM_TOKEN is not configured; skipping npm publication"

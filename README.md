@@ -31,7 +31,7 @@ After published releases are available, the same binary is installable with
 Homebrew and the typed launcher/client with npm or pnpm:
 
 ```sh
-brew install anurgosw/tap/agentic-moe
+brew install --cask Anurag607/tap/agentic-moe
 npm install agentic-moe
 # or: pnpm add agentic-moe
 ```
