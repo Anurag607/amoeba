@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/execution"
+	"github.com/Anurag607/amoeba/execution"
 )
 
 // MemoryStore is a concurrency-safe reference implementation. It models the

@@ -19,9 +19,9 @@ builds:
     ldflags:
       - -s -w
       - -buildid=
-      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Version={{ .Version }}
-      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Commit={{ .Commit }}
-      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Date={{ .CommitDate }}
+      - -X github.com/Anurag607/amoeba/internal/buildinfo.Version={{ .Version }}
+      - -X github.com/Anurag607/amoeba/internal/buildinfo.Commit={{ .Commit }}
+      - -X github.com/Anurag607/amoeba/internal/buildinfo.Date={{ .CommitDate }}
   - id: agentic-moe-eval
     main: ./cmd/agentic-moe-eval
     binary: agentic-moe-eval
@@ -38,9 +38,9 @@ builds:
     ldflags:
       - -s -w
       - -buildid=
-      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Version={{ .Version }}
-      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Commit={{ .Commit }}
-      - -X github.com/anurgosw/agentic-moe/internal/buildinfo.Date={{ .CommitDate }}
+      - -X github.com/Anurag607/amoeba/internal/buildinfo.Version={{ .Version }}
+      - -X github.com/Anurag607/amoeba/internal/buildinfo.Commit={{ .Commit }}
+      - -X github.com/Anurag607/amoeba/internal/buildinfo.Date={{ .CommitDate }}
 
 archives:
   - id: release

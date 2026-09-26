@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/moe"
+	"github.com/Anurag607/amoeba/moe"
 	"gopkg.in/yaml.v3"
 )
 

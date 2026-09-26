@@ -21,8 +21,8 @@ thin adapters over the same runtime and never duplicate routing logic.
 Build the CLI from source:
 
 ```sh
-go install github.com/anurgosw/agentic-moe/cmd/agentic-moe@latest
-go install github.com/anurgosw/agentic-moe/cmd/agentic-moe-eval@latest
+go install github.com/Anurag607/amoeba/cmd/agentic-moe@latest
+go install github.com/Anurag607/amoeba/cmd/agentic-moe-eval@latest
 agentic-moe doctor
 agentic-moe mcp stdio
 ```

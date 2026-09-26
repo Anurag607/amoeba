@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/runtimekit"
 )
 
 func TestRoutingCorpusMatchesDefaultRuntime(t *testing.T) {

@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anurgosw/agentic-moe.git"
+    "url": "git+https://github.com/Anurag607/amoeba.git"
   },
   "files": [
     "dist",
@@ -22,7 +22,7 @@
     }
   },
   "bin": {
-    "agentic-moe": "./dist/cli.js"
+    "agentic-moe": "dist/cli.js"
   },
   "engines": {
     "node": ">=20"

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/anurgosw/agentic-moe/trajectory"
+	"github.com/Anurag607/amoeba/trajectory"
 )
 
 type mockHarness struct{ configured bool }

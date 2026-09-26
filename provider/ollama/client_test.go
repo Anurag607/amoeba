@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/moe"
+	"github.com/Anurag607/amoeba/moe"
 )
 
 func TestClientDiscoversVersionAndModels(t *testing.T) {

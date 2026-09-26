@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/runtimekit"
 )
 
 func ExampleRuntime_Plan() {

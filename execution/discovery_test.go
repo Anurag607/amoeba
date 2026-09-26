@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/anurgosw/agentic-moe/policy"
+	"github.com/Anurag607/amoeba/policy"
 )
 
 func TestCatalogDiscoverPagesWithoutEagerSchemas(t *testing.T) {

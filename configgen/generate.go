@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/runtimekit"
 	"gopkg.in/yaml.v3"
 )
 

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/policy"
+	"github.com/Anurag607/amoeba/policy"
 )
 
 func staticResource(resource string) ResourceResolver {

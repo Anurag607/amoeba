@@ -40,5 +40,5 @@ Versioning and keeps this file in the Keep a Changelog format.
 - Cross-platform release archives, checksums, SBOM generation, Homebrew
   packaging, npm provenance, and local certification scripts.
 
-[Unreleased]: https://github.com/anurgosw/agentic-moe/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/anurgosw/agentic-moe/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Anurag607/amoeba/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Anurag607/amoeba/releases/tag/v0.1.0

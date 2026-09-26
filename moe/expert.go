@@ -13,8 +13,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/anurgosw/agentic-moe/log"
-	"github.com/anurgosw/agentic-moe/skills"
+	"github.com/Anurag607/amoeba/log"
+	"github.com/Anurag607/amoeba/skills"
 )
 
 // ExpertID uniquely identifies an expert.

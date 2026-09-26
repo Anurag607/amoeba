@@ -20,10 +20,13 @@ publishes GitHub assets, attaches a GitHub build-provenance attestation, updates
 the Homebrew tap, and publishes npm with provenance. The npm job waits for the
 binary release to succeed. Actions are pinned to full commit digests, jobs use
 least-privilege permissions, and dependency updates are proposed by Dependabot.
-GitHub credentials are provided by Actions. Homebrew and npm publication run
-only when `HOMEBREW_TAP_TOKEN` and `NPM_TOKEN`, respectively, are configured as
-repository secrets; without them, the canonical GitHub release still completes
-and the unavailable secondary publication is reported as skipped. These
+GitHub credentials are provided by Actions. Homebrew publication runs only when
+the `HOMEBREW_TAP_TOKEN` repository secret is configured. npm publication is an
+explicit opt-in: set the `NPM_PUBLISH_ENABLED` repository variable to `true`
+only after the `NPM_TOKEN` secret has permission to publish `agentic-moe`.
+Without those settings, the canonical GitHub release still completes and the
+unavailable secondary publication is reported as skipped. The opt-in prevents
+an unprovisioned or stale registry token from breaking binary releases. These
 deployment credentials are never required for local source builds.
 Release retries replace same-name GitHub assets, so a failed secondary
 publication can be repaired without deleting the canonical release.

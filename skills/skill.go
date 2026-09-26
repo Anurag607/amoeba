@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/policy"
+	"github.com/Anurag607/amoeba/policy"
 )
 
 // Skill is a single domain-knowledge module.

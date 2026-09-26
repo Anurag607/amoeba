@@ -1,6 +1,6 @@
 package evaluation
 
-import "github.com/anurgosw/agentic-moe/runtimekit"
+import "github.com/Anurag607/amoeba/runtimekit"
 
 // RoutingSplit separates cases used while tuning from cases that guard
 // against overfitting. Holdout expectations must not be changed to make an

@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anurgosw/agentic-moe/agent"
-	"github.com/anurgosw/agentic-moe/execution"
-	"github.com/anurgosw/agentic-moe/policy"
-	"github.com/anurgosw/agentic-moe/skills"
+	"github.com/Anurag607/amoeba/agent"
+	"github.com/Anurag607/amoeba/execution"
+	"github.com/Anurag607/amoeba/policy"
+	"github.com/Anurag607/amoeba/skills"
 )
 
 func TestRegisteredSkillToolsUseSealedPolicyAndStrictArguments(t *testing.T) {

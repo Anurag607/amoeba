@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/runtimekit"
 )
 
 // BuiltInCases returns the frozen, provider-neutral capability suite. The

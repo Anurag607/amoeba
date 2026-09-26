@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/configgen"
-	"github.com/anurgosw/agentic-moe/internal/buildinfo"
-	"github.com/anurgosw/agentic-moe/mcpserver"
-	"github.com/anurgosw/agentic-moe/provider/ollama"
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/configgen"
+	"github.com/Anurag607/amoeba/internal/buildinfo"
+	"github.com/Anurag607/amoeba/mcpserver"
+	"github.com/Anurag607/amoeba/provider/ollama"
+	"github.com/Anurag607/amoeba/runtimekit"
 )
 
 func run(ctx context.Context, args []string, stdout, stderr io.Writer) error {

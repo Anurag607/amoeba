@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/guardrail"
-	"github.com/anurgosw/agentic-moe/policy"
+	"github.com/Anurag607/amoeba/guardrail"
+	"github.com/Anurag607/amoeba/policy"
 )
 
 // IndeterminateError means execution may have produced an external effect;

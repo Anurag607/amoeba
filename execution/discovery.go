@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/anurgosw/agentic-moe/policy"
+	"github.com/Anurag607/amoeba/policy"
 )
 
 // CapabilityQuery pages through the policy-filtered catalog. Schemas are

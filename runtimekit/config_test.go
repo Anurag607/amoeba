@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/anurgosw/agentic-moe/moe"
+	"github.com/Anurag607/amoeba/moe"
 )
 
 func TestLoadStrictPrecedenceAndMigration(t *testing.T) {

@@ -1,8 +1,8 @@
 package moe
 
 import (
-	"github.com/anurgosw/agentic-moe/execution"
-	"github.com/anurgosw/agentic-moe/policy"
+	"github.com/Anurag607/amoeba/execution"
+	"github.com/Anurag607/amoeba/policy"
 	"github.com/tmc/langchaingo/llms"
 )
 

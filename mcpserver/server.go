@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/anurgosw/agentic-moe/internal/buildinfo"
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/internal/buildinfo"
+	"github.com/Anurag607/amoeba/runtimekit"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

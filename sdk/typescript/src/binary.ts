@@ -7,7 +7,7 @@ import { spawn } from "node:child_process";
 
 import { VERSION } from "./version.js";
 
-const repository = "https://github.com/anurgosw/agentic-moe";
+const repository = "https://github.com/Anurag607/amoeba";
 const maxArchiveBytes = 128 * 1024 * 1024;
 const maxChecksumBytes = 1024 * 1024;
 

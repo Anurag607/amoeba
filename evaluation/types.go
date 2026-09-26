@@ -7,7 +7,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/runtimekit"
 )
 
 // ReportVersion is the machine-readable evaluation report schema version.

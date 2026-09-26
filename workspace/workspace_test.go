@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/anurgosw/agentic-moe/execution"
+	"github.com/Anurag607/amoeba/execution"
 )
 
 func TestMutableWorkspaceLeaseUsesCanonicalRootAndOwnerCAS(t *testing.T) {

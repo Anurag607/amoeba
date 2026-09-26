@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/moe"
-	"github.com/anurgosw/agentic-moe/skills"
+	"github.com/Anurag607/amoeba/moe"
+	"github.com/Anurag607/amoeba/skills"
 )
 
 // ProviderSource discovers model candidates without transferring credentials.

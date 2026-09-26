@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/anurgosw/agentic-moe/moe"
+	"github.com/Anurag607/amoeba/moe"
 )
 
 type tagsResponse struct {

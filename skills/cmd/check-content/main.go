@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/anurgosw/agentic-moe/skills"
+	"github.com/Anurag607/amoeba/skills"
 )
 
 func main() {

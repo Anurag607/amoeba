@@ -8,7 +8,7 @@ trap 'rm -rf "$work"' EXIT HUP INT TERM
 version=${VERSION:-0.1.0}
 commit=${COMMIT:-0000000000000000000000000000000000000000}
 date=${BUILD_DATE:-1970-01-01T00:00:00Z}
-ldflags="-s -w -buildid= -X github.com/anurgosw/agentic-moe/internal/buildinfo.Version=$version -X github.com/anurgosw/agentic-moe/internal/buildinfo.Commit=$commit -X github.com/anurgosw/agentic-moe/internal/buildinfo.Date=$date"
+ldflags="-s -w -buildid= -X github.com/Anurag607/amoeba/internal/buildinfo.Version=$version -X github.com/Anurag607/amoeba/internal/buildinfo.Commit=$commit -X github.com/Anurag607/amoeba/internal/buildinfo.Date=$date"
 
 (
   cd "$root"

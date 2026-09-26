@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/anurgosw/agentic-moe/policy"
+	"github.com/Anurag607/amoeba/policy"
 )
 
 // ToolRef pins the exact admitted tool registration.

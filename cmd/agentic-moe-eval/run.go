@@ -13,9 +13,9 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/anurgosw/agentic-moe/evaluation"
-	"github.com/anurgosw/agentic-moe/internal/buildinfo"
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/evaluation"
+	"github.com/Anurag607/amoeba/internal/buildinfo"
+	"github.com/Anurag607/amoeba/runtimekit"
 )
 
 var errThreshold = errors.New("evaluation thresholds were not met")

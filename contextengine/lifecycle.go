@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/execution"
+	"github.com/Anurag607/amoeba/execution"
 )
 
 // SnapshotRecord is the durable context head for one owner/session.

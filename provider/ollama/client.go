@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/moe"
+	"github.com/Anurag607/amoeba/moe"
 )
 
 // Config controls the Ollama discovery client.

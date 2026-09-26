@@ -1,4 +1,4 @@
-module github.com/anurgosw/agentic-moe
+module github.com/Anurag607/amoeba
 
 go 1.25.5
 

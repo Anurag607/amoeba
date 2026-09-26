@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/execution"
-	"github.com/anurgosw/agentic-moe/trajectory"
-	"github.com/anurgosw/agentic-moe/workspace"
+	"github.com/Anurag607/amoeba/execution"
+	"github.com/Anurag607/amoeba/trajectory"
+	"github.com/Anurag607/amoeba/workspace"
 )
 
 type Health string

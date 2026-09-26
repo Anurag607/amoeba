@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anurgosw/agentic-moe/runtimekit"
+	"github.com/Anurag607/amoeba/runtimekit"
 )
 
 func TestBuiltInCasesAreValidAndFilterable(t *testing.T) {

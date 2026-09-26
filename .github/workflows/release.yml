@@ -54,6 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
+      NPM_PUBLISH_ENABLED: ${{ vars.NPM_PUBLISH_ENABLED }}
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     permissions:
       contents: read
@@ -72,8 +73,8 @@ jobs:
       - run: npm audit --audit-level=high
       - run: ../../scripts/verify_versions.sh "$GITHUB_REF_NAME"
       - name: Publish npm package
-        if: env.NODE_AUTH_TOKEN != ''
+        if: env.NPM_PUBLISH_ENABLED == 'true' && env.NODE_AUTH_TOKEN != ''
         run: npm publish --provenance --access public
       - name: Report skipped npm publication
-        if: env.NODE_AUTH_TOKEN == ''
-        run: echo "::notice::NPM_TOKEN is not configured; skipping npm publication"
+        if: env.NPM_PUBLISH_ENABLED != 'true' || env.NODE_AUTH_TOKEN == ''
+        run: echo "::notice::Set NPM_PUBLISH_ENABLED=true and configure NPM_TOKEN to publish to npm; skipping npm publication"

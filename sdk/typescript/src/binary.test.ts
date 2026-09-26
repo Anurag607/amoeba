@@ -63,11 +63,13 @@ test("resolveBinary refuses a release with a mismatched checksum", async () => {
   const originalPath = process.env.PATH;
   const originalBinary = process.env.AGENTIC_MOE_BINARY;
   const originalFetch = globalThis.fetch;
+  const requestedURLs: string[] = [];
   try {
     process.env.PATH = "";
     delete process.env.AGENTIC_MOE_BINARY;
     globalThis.fetch = async (input) => {
       const url = String(input);
+      requestedURLs.push(url);
       if (url.endsWith("checksums.txt")) {
         const platform = process.platform === "win32" ? "windows" : process.platform;
         const arch = process.arch === "x64" ? "amd64" : process.arch;
@@ -77,6 +79,14 @@ test("resolveBinary refuses a release with a mismatched checksum", async () => {
       return new Response("not an archive");
     };
     await assert.rejects(resolveBinary({ version: "0.1.0", cacheDir: directory }), /checksum mismatch/);
+    const platform = process.platform === "win32" ? "windows" : process.platform;
+    const arch = process.arch === "x64" ? "amd64" : process.arch;
+    const extension = platform === "windows" ? "zip" : "tar.gz";
+    const releaseURL = "https://github.com/Anurag607/amoeba/releases/download/v0.1.0";
+    assert.deepEqual(requestedURLs, [
+      `${releaseURL}/agentic-moe_0.1.0_${platform}_${arch}.${extension}`,
+      `${releaseURL}/checksums.txt`,
+    ]);
   } finally {
     globalThis.fetch = originalFetch;
     if (originalPath === undefined) delete process.env.PATH; else process.env.PATH = originalPath;

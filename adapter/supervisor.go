@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/trajectory"
+	"github.com/Anurag607/amoeba/trajectory"
 )
 
 // HarnessSupervisor enforces manifest pinning, bounded concurrency, event

@@ -3,7 +3,7 @@ package runtimekit
 import (
 	"time"
 
-	"github.com/anurgosw/agentic-moe/moe"
+	"github.com/Anurag607/amoeba/moe"
 )
 
 // RoutingInput is the transport-safe routing context.

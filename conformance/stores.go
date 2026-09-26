@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/contextengine"
-	"github.com/anurgosw/agentic-moe/continuation"
-	"github.com/anurgosw/agentic-moe/execution"
-	"github.com/anurgosw/agentic-moe/trajectory"
+	"github.com/Anurag607/amoeba/contextengine"
+	"github.com/Anurag607/amoeba/continuation"
+	"github.com/Anurag607/amoeba/execution"
+	"github.com/Anurag607/amoeba/trajectory"
 )
 
 type CoreStores struct {

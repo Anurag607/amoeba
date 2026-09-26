@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anurgosw/agentic-moe/execution"
+	"github.com/Anurag607/amoeba/execution"
 )
 
 func TestContinuationExactResumeAndAtomicOutbox(t *testing.T) {
