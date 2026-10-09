@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/modelcontextprotocol/go-sdk v1.8.0
-	github.com/tmc/langchaingo v0.1.14
+	github.com/tmc/langchaingo v0.1.15
 	gopkg.in/yaml.v3 v3.0.1
 )
 
